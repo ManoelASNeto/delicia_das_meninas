@@ -1,12 +1,17 @@
+// ignore_for_file: avoid_print
+
 import 'package:http/http.dart';
 import 'package:http_interceptor/http_interceptor.dart';
 import 'package:parse_server_sdk_flutter/parse_server_sdk.dart';
 
 abstract class IHttpClient {
   Future<Response> get(String? endPoint, {Map<String, String>? headers});
-  Future<Response> post(String? endPoint, String body, {Map<String, String>? headers});
-  Future<Response> patch(String? endPoint, String body, {Map<String, String>? headers});
-  Future<Response> put(String? endPoint, String body, {Map<String, String>? headers});
+  Future<Response> post(String? endPoint, String body,
+      {Map<String, String>? headers});
+  Future<Response> patch(String? endPoint, String body,
+      {Map<String, String>? headers});
+  Future<Response> put(String? endPoint, String body,
+      {Map<String, String>? headers});
   Future<Response> delete(String? endPoint, {Map<String, String>? headers});
 }
 
@@ -39,7 +44,8 @@ class HttpClient extends IHttpClient implements InterceptorContract {
   }
 
   @override
-  Future<Response> get(String? endPoint, {Map<String, dynamic>? headers}) async {
+  Future<Response> get(String? endPoint,
+      {Map<String, dynamic>? headers}) async {
     final response = await _client.get(
       endPoint!.toUri(),
       headers: {
@@ -106,7 +112,8 @@ class HttpClient extends IHttpClient implements InterceptorContract {
   }
 
   @override
-  Future<Response> delete(String? endPoint, {Map<String, String>? headers}) async {
+  Future<Response> delete(String? endPoint,
+      {Map<String, String>? headers}) async {
     final response = await _client.delete(
       endPoint!.toUri(),
       headers: {

@@ -10,19 +10,28 @@ class HighLightBloc extends Bloc<HighLightEvent, HighLightState> {
   final GetHighLightUseCase getHighLightUseCase;
 
   HighLightBloc(this.getHighLightUseCase) : super(HighLightState.initial()) {
-    on<HighLight>((event, emit) async {
-      emit(state.loading());
-      var fold = await getHighLightUseCase(event);
-      emit(fold.fold((failure) => state.error(_mapHighLightFailureToString(failure)),
-          (getLightsUseCase) => state.ready(getLightsUseCase)));
-    });
+    on<HighLight>(
+      (event, emit) async {
+        emit(state.loading());
+        var fold = await getHighLightUseCase(event);
+        emit(
+          await fold.fold(
+            (failure) => state.error(
+              _mapHighLightFailureToString(failure),
+            ),
+            (getLightsUseCase) => state.ready(getLightsUseCase),
+          ),
+        );
+      },
+    );
   }
 
-  String _mapHighLightFailureToString(Failures failures) {
-    return failures.maybeWhen(
-      serverFailures: () => AppStrings.serverFailure,
-      networkFailures: () => AppStrings.networkFailure,
-      orElse: () => AppStrings.error,
-    );
+  String _mapHighLightFailureToString(Failure failures) {
+    switch (failures.runtimeType) {
+      case ServerFailure:
+        return AppStrings.serverFailure;
+      default:
+        return AppStrings.error;
+    }
   }
 }

@@ -26,6 +26,7 @@ class UrlCreator implements IUrlCreator {
             host: _urlKey,
             port: port,
             pathSegments: [...endpoint!.split('/'), ...(pathSegments ?? [])],
+            // ignore: prefer_if_null_operators
             queryParameters: queryParameters != null ? queryParameters : null)
         .toString();
   }

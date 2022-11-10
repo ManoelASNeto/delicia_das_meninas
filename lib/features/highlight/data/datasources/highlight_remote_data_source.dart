@@ -21,17 +21,18 @@ class HomeRemoteDataSource implements IHomeRemoteDataSource {
   @override
   Future<List<HighLightModel>> highLightList() async {
     if (await networkInfo.isConnectd) {
-      final response = await client.get(urlCreator.create(endpoint: EndPoints.highLight));
+      final response =
+          await client.get(urlCreator.create(endpoint: EndPoints.highLight));
       switch (response.statusCode) {
         case 200:
           final responseJson = jsonDecode(response.body);
           final highLightList = responseJson['results'] as List;
           return highLightList.map((e) => HighLightModel.fromJson(e)).toList();
         default:
-          throw const ServerException();
+          throw ServerException();
       }
     } else {
-      throw const NetworkException();
+      throw NetworkException();
     }
   }
 }

@@ -12,19 +12,28 @@ class HomeBloc extends Bloc<ProductEvent, HomeState> {
   final GetProduct getProduct;
 
   HomeBloc(this.getProduct) : super(const HomeState.initial()) {
-    on<Product>((event, emit) async {
-      emit(state.loading());
-      var fold = await getProduct(event);
-      emit(fold.fold(
-          (failure) => state.error(_mapHomeFailureToString(failure)), (getProducts) => state.ready(getProducts)));
-    });
+    on<Product>(
+      (event, emit) async {
+        emit(state.loading());
+        var fold = await getProduct(event);
+        emit(
+          await fold.fold(
+            (failure) => state.error(
+              _mapHomeFailureToString(failure),
+            ),
+            (getProducts) => state.ready(getProducts),
+          ),
+        );
+      },
+    );
   }
 
-  String _mapHomeFailureToString(Failures failures) {
-    return failures.maybeWhen(
-      serverFailures: () => AppStrings.serverFailure,
-      networkFailures: () => AppStrings.networkFailure,
-      orElse: () => AppStrings.error,
-    );
+  String _mapHomeFailureToString(Failure failures) {
+    switch (failures.runtimeType) {
+      case ServerFailure:
+        return AppStrings.serverFailure;
+      default:
+        return AppStrings.error;
+    }
   }
 }

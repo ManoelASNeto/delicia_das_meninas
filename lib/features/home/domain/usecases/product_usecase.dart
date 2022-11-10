@@ -9,7 +9,7 @@ class GetProduct {
 
   GetProduct(this.repository);
 
-  Future<Either<Failures, List<Products>>> call(event) async {
+  Future<Either<Failure, List<Products>>> call(event) async {
     return await repository.productList();
   }
 }

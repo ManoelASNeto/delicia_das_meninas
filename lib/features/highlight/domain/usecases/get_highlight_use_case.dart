@@ -9,7 +9,7 @@ class GetHighLightUseCase {
 
   GetHighLightUseCase(this.repository);
 
-  Future<Either<Failures, List<HighLight>>> call(event) async {
+  Future<Either<Failure, List<HighLight>>> call(event) async {
     return await repository.highlightList();
   }
 }

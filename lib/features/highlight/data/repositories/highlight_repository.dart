@@ -12,16 +12,14 @@ class HighLightRepository implements IHighLightRepository {
   HighLightRepository(this.remoteDataSource);
 
   @override
-  Future<Either<Failures, List<HighLight>>> highlightList() async {
+  Future<Either<Failure, List<HighLight>>> highlightList() async {
     try {
       var highLightListModel = await remoteDataSource.highLightList();
       final entity = highLightListModel.map((e) => e.toEntity()).toList();
 
       return Right(entity);
-    } on NetworkException {
-      return const Left(NetworkFailures());
     } on ServerException {
-      return const Left(ServerFailures());
+      return Left(ServerFailure());
     }
   }
 }

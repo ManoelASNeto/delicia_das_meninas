@@ -1,4 +1,4 @@
-import 'package:connectivity/connectivity.dart';
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:get_it/get_it.dart';
 import 'package:http/http.dart' as http;
 import 'package:loja_delicia_das_meninas/features/home/data/datasources/product_remote_data_source.dart';
@@ -26,12 +26,15 @@ Future<void> init() async {
   sl.registerLazySingleton(() => HomeBloc(sl()));
   sl.registerLazySingleton(() => GetProduct(sl()));
   sl.registerLazySingleton<IProductRepository>(() => ProductRepository(sl()));
-  sl.registerLazySingleton<IProductRemoteDataSource>(() => ProductRemoteDataSource(sl(), sl(), sl()));
+  sl.registerLazySingleton<IProductRemoteDataSource>(
+      () => ProductRemoteDataSource(sl(), sl(), sl()));
 
   sl.registerLazySingleton(() => HighLightBloc(sl()));
   sl.registerLazySingleton(() => GetHighLightUseCase(sl()));
-  sl.registerLazySingleton<IHighLightRepository>(() => HighLightRepository(sl()));
-  sl.registerLazySingleton<IHomeRemoteDataSource>(() => HomeRemoteDataSource(sl(), sl(), sl()));
+  sl.registerLazySingleton<IHighLightRepository>(
+      () => HighLightRepository(sl()));
+  sl.registerLazySingleton<IHomeRemoteDataSource>(
+      () => HomeRemoteDataSource(sl(), sl(), sl()));
 
   await Parse().initialize(
     'bZTSzIYal3FzAcLtuMVclhWMj7lbmGBednBdb2TX',

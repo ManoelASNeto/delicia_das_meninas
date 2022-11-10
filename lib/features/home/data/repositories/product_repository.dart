@@ -12,17 +12,15 @@ class ProductRepository implements IProductRepository {
   ProductRepository(this.remoteDataSource);
 
   @override
-  Future<Either<Failures, List<Products>>> productList() async {
+  Future<Either<Failure, List<Products>>> productList() async {
     try {
       var productListModel = await remoteDataSource.productList();
 
       final entity = productListModel.map((e) => e.toEntity()).toList();
 
       return Right(entity);
-    } on NetworkException {
-      return const Left(NetworkFailures());
     } on ServerException {
-      return const Left(ServerFailures());
+      return Left(ServerFailure());
     }
   }
 }
